@@ -15,40 +15,40 @@ class RGBColor{
 };
 
 vector <int> RGBColor::getComplement(vector <int> rgb){
-	int i;	
-	int j;
-	const int MAXCOLOR = 255;
-	const int SPECIAL_COMP = 128;
-	const int MIN_DIFF = 32;
-	bool switch_complement;
-	vector <int> complement;
+    int i;    
+    int j;
+    const int MAXCOLOR = 255;
+    const int SPECIAL_COMP = 128;
+    const int MIN_DIFF = 32;
+    bool switch_complement;
+    vector <int> complement;
 
-	complement.clear();
-	
-	for (i = 0; i < rgb.size(); i++){
-		complement.push_back(MAXCOLOR - rgb[i]);
-	}
+    complement.clear();
+    
+    for (i = 0; i < rgb.size(); i++){
+        complement.push_back(MAXCOLOR - rgb[i]);
+    }
 
-	switch_complement = true;
+    switch_complement = true;
 
-	for (i = 0; i < rgb.size(); i++){
-		for (j = 0; j < complement.size(); j++){
-			if (abs(rgb[i] - complement[i]) > MIN_DIFF){
-				switch_complement = false;
-				break;
-			}
-		}
-	}
+    for (i = 0; i < rgb.size(); i++){
+        for (j = 0; j < complement.size(); j++){
+            if (abs(rgb[i] - complement[i]) > MIN_DIFF){
+                switch_complement = false;
+                break;
+            }
+        }
+    }
 
-	if (switch_complement){
-		for (i = 0; i < rgb.size(); i++){
-			if (rgb[i] >= SPECIAL_COMP){
-				complement[i] = rgb[i] - SPECIAL_COMP;
-			} else{
-				complement[i] = rgb[i] + SPECIAL_COMP;
-			}
-		}
-	}
+    if (switch_complement){
+        for (i = 0; i < rgb.size(); i++){
+            if (rgb[i] >= SPECIAL_COMP){
+                complement[i] = rgb[i] - SPECIAL_COMP;
+            } else{
+                complement[i] = rgb[i] + SPECIAL_COMP;
+            }
+        }
+    }
 
-	return complement;
+    return complement;
 }
