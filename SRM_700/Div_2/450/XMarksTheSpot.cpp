@@ -32,7 +32,6 @@ int XMarksTheSpot::countArea(std::vector <std::string> board)
     }
   }
 
-  // Bit-shift enumerate all possible q combinations. 0 = '.', 1 = '?'
   long double num_combinations_float = pow((long double) 2,
       (long double) q_locations.size());
   
