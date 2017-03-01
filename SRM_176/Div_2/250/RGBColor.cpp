@@ -1,54 +1,35 @@
-#include <set>
-#include <map>
-#include <list>
-#include <queue>
-#include <stack>
-#include <string>
-#include <vector>
+#include <algorithm>
 #include <cmath>
+#include <vector>
 
-using namespace std;
+const int MAX_COLOR_VALUE = 255;
+const int MIN_DISTINGUISH_RANGE = 32;
+const int MEDIAN_COLOR_VALUE = 128;
 
-class RGBColor{
-    public:
-        vector <int> getComplement(vector <int> rgb);
+class RGBColor
+{
+public:
+  std::vector<int> getComplement(std::vector<int> rgb);
 };
 
-vector <int> RGBColor::getComplement(vector <int> rgb){
-    int i;    
-    int j;
-    const int MAXCOLOR = 255;
-    const int SPECIAL_COMP = 128;
-    const int MIN_DIFF = 32;
-    bool switch_complement;
-    vector <int> complement;
+std::vector<int> RGBColor::getComplement(std::vector<int> rgb)
+{
+  bool should_form_alternate_complement = true;
+  std::vector<int> complement;
 
-    complement.clear();
-    
-    for (i = 0; i < rgb.size(); i++){
-        complement.push_back(MAXCOLOR - rgb[i]);
+  for (int i = 0; i < rgb.size(); i++) {
+    int component_complement = MAX_COLOR_VALUE - rgb[i];
+    if (component_complement > MIN_DISTINGUISH_RANGE) {
+      should_form_alternate_complement = false;
     }
+    complement.push_back(component_complement);
+  }
 
-    switch_complement = true;
-
-    for (i = 0; i < rgb.size(); i++){
-        for (j = 0; j < complement.size(); j++){
-            if (abs(rgb[i] - complement[i]) > MIN_DIFF){
-                switch_complement = false;
-                break;
-            }
-        }
+  if (should_form_alternate_complement) {
+    for (int i = 0; i < complement.size(); i++) {
+      complement[i] = std::max(rgb[i] - MEDIAN_COLOR_VALUE, rgb[i] + MEDIAN_COLOR_VALUE);
     }
+  }
 
-    if (switch_complement){
-        for (i = 0; i < rgb.size(); i++){
-            if (rgb[i] >= SPECIAL_COMP){
-                complement[i] = rgb[i] - SPECIAL_COMP;
-            } else{
-                complement[i] = rgb[i] + SPECIAL_COMP;
-            }
-        }
-    }
-
-    return complement;
+  return complement;
 }
