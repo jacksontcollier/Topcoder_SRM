@@ -1,70 +1,41 @@
 #include <set>
-#include <map>
-#include <list>
-#include <queue>
-#include <stack>
 #include <string>
 #include <vector>
 
-using namespace std;
-
-class Matching{
-    public:
-        vector <string> findMatch(vector <string> first, vector <string> second);
+class Matching
+{
+public:
+  std::vector<std::string> findMatch(std::vector<std::string> first,
+      std::vector<std::string> second);
 };
 
-vector <string> Matching::findMatch(vector <string> first, vector <string> second){
-    int i;
-    set <string> symbols;
-    set <string> colors;
-    set <string> fill;
-    set <string> num_symbols;
-    set <string>::iterator sit;
-    vector <string> third;
-    vector < set <string> > characteristics;
+std::vector<std::string> Matching::findMatch(std::vector<std::string> first,
+    std::vector<std::string> second)
+{
+  std::set<std::string> card_symbols { "CIRCLE", "SQUIGGLE", "DIAMOND" };
+  std::set<std::string> card_colors { "RED", "BLUE", "GREEN" };
+  std::set<std::string> card_fills { "SOLID", "STRIPED", "EMPTY" };
+  std::set<std::string> card_symbols_occurrences { "ONE", "TWO", "THREE" };
+  std::vector<std::set<std::string>> card_characteristics {
+    card_symbols, card_colors, card_fills, card_symbols_occurrences
+  };
 
-    symbols.clear();
-    symbols.insert("CIRCLE");
-    symbols.insert("SQUIGGLE");    
-    symbols.insert("DIAMOND");
+  std::vector<std::string> third;
 
-    colors.clear();
-    colors.insert("RED");
-    colors.insert("BLUE");
-    colors.insert("GREEN");
+  for (int i = 0; i < first.size(); i++) {
+    if (first[i] == second[i]) {
+      third.push_back(first[i]);
+    } else {
+      std::set<std::string>::iterator sit = card_characteristics[i].find(first[i]);
+      card_characteristics[i].erase(sit);
 
-    fill.clear();
-    fill.insert("SOLID");
-    fill.insert("STRIPED");
-    fill.insert("EMPTY");
+      sit = card_characteristics[i].find(second[i]);
+      card_characteristics[i].erase(sit);
 
-    num_symbols.clear();
-    num_symbols.insert("ONE");
-    num_symbols.insert("TWO");
-    num_symbols.insert("THREE");
-
-    characteristics.clear();
-    characteristics.push_back(symbols);
-    characteristics.push_back(colors);
-    characteristics.push_back(fill);
-    characteristics.push_back(num_symbols);
-
-    third.clear();
-
-    for (i = 0; i < first.size(); i++){
-        if (first[i] == second[i]){
-            third.push_back(first[i]);
-        } else{
-            sit = characteristics[i].find(first[i]);
-            characteristics[i].erase(sit);
-            
-            sit = characteristics[i].find(second[i]);
-            characteristics[i].erase(sit);
-            
-            sit = characteristics[i].begin();
-            third.push_back(*sit);
-        }
+      sit = card_characteristics[i].begin();
+      third.push_back(*sit);
     }
-    
-    return third;
+  }
+
+  return third;
 }
